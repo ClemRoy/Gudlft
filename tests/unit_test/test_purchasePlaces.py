@@ -23,7 +23,22 @@ def test_purchasePlaces_valid_points_number(client, club, competition, monkeypat
     assert club[0]['points'] == 8
 
 
-def test_purchasePlaces_too_many_points(client, club, competition, monkeypatch):
+def test_purchasePlaces_customer_use_too_many_points(client, club, competition, monkeypatch):
+
+    monkeypatch.setattr('server.competitions', competition)
+    monkeypatch.setattr('server.clubs', club)
+
+    response = client.post(
+        '/purchasePlaces', data={
+            "competition": competition[0]['name'],
+            "club": club[1]['name'],
+            "places": 8})
+    assert response.status_code == 200
+    assert b'Error: Inssufficient points' in response.data
+    assert int(competition[0]['numberOfPlaces']) == 25
+    assert int(club[1]['points']) == 4
+
+def test_purchasePlaces_customer_book_too_many_places(client, club, competition, monkeypatch):
 
     monkeypatch.setattr('server.competitions', competition)
     monkeypatch.setattr('server.clubs', club)
@@ -32,9 +47,8 @@ def test_purchasePlaces_too_many_points(client, club, competition, monkeypatch):
         '/purchasePlaces', data={
             "competition": competition[0]['name'],
             "club": club[0]['name'],
-            "places": 20})
-    print( club[0]['points'])
+            "places": 13})
     assert response.status_code == 200
-    assert b'Error: Inssufficient points' in response.data
+    assert b'Error: You cannot redeem more than 12 places' in response.data
     assert int(competition[0]['numberOfPlaces']) == 25
     assert int(club[0]['points']) == 13

@@ -3,6 +3,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Booking for {{competition['name']}} || GUDLFT</title>
+    <script>
+        function validatePlaces() {
+            var placesInput = document.getElementById("places");
+            var maxPlaces = Math.min(12, parseInt(placesInput.max));
+            if (placesInput.value > maxPlaces) {
+                alert("Error: You can only book a maximum of " + maxPlaces + " places.");
+                placesInput.value = maxPlaces;
+            }
+        }
+    </script>
 </head>
 <body>
     <h2>{{competition['name']}}</h2>
@@ -10,8 +20,8 @@
     <form action="/purchasePlaces" method="post">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label>
-        <input type="number" name="places" id="" max="{{club['points']}}"/>
+        <label for="places">How many places? (the maximum is 12 or your number of points available)</label>
+        <input type="number" name="places" id="places" onchange="validatePlaces()" max="{{club['points']}}"/>
         <button type="submit">Book</button>
     </form>
 </body>
