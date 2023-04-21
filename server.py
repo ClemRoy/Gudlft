@@ -1,5 +1,6 @@
 import json
 from flask import Flask,render_template,request,redirect,flash,url_for,abort
+from datetime import datetime
 
 
 def loadClubs():
@@ -22,6 +23,15 @@ clubs = loadClubs()
 
 maxPlaces = 12
 
+def check_for_availability(competition):
+    now = datetime.now()
+    comp_date = datetime.strptime(competition['date'], "%Y-%m-%d %H:%M:%S")
+    if comp_date < now:
+        competition['available'] = False
+    elif comp_date >= now:
+        competition['available'] = True
+    return competition
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -32,6 +42,8 @@ def showSummary():
         club = [club for club in clubs if club['email'] == request.form['email']][0]
     except IndexError:
         abort(404,"Email not found")
+    for competition in competitions:
+        competition = check_for_availability(competition)
     return render_template('welcome.html',club=club,competitions=competitions)
 
 
@@ -39,12 +51,21 @@ def showSummary():
 def book(competition,club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
-    if foundClub and foundCompetition:
-        print(foundClub)
-        return render_template('booking.html',club=foundClub,competition=foundCompetition)
-    else:
-        flash("Something went wrong-please try again")
+    try:
+        key_exist = foundCompetition["available"]
+    except KeyError:
+        flash('Please follow the links and do not attempt to directly enter an url')
+        return render_template('index.html')
+    if foundCompetition['available'] == False:
+        flash("You were redirected here because you tried to book place for a competition that already happened")
         return render_template('welcome.html', club=club, competitions=competitions)
+    else:
+        if foundClub and foundCompetition:
+            return render_template('booking.html',club=foundClub,competition=foundCompetition)
+        else:
+            flash("Something went wrong-please try again")
+            return render_template('welcome.html', club=club, competitions=competitions)
+
 
 
 @app.route('/purchasePlaces',methods=['POST'])
