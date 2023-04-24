@@ -76,3 +76,14 @@ def test_book_unknown_club(client, clubs, competitions, monkeypatch):
     monkeypatch.setattr('server.clubs', clubs)
     response = client.get("book/Future%20comp/SimplXXXX")
     assert b"Please follow the links and do not attempt to directly enter an url" in response.data
+
+def test_book_unknown_competition(client, clubs, competitions, monkeypatch):
+    """
+    Given: a user try to access a competition with an unknown competition in the url
+    When: he directly enter the wrong club name in the url
+    Then: he should be redirected to the index with an error message
+    """
+    monkeypatch.setattr('server.competitions', competitions)
+    monkeypatch.setattr('server.clubs', clubs)
+    response = client.get("book/SpAAAAAival/Simply%20Lift")
+    assert b"Please follow the links and do not attempt to directly enter an url" in response.data

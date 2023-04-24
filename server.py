@@ -55,7 +55,11 @@ def book(competition,club):
     except IndexError:
         flash('Please follow the links and do not attempt to directly enter an url')
         return render_template('index.html')
-    foundCompetition = [c for c in competitions if c['name'] == competition][0]
+    try:
+        foundCompetition = [c for c in competitions if c['name'] == competition][0]
+    except IndexError:
+        flash('Please follow the links and do not attempt to directly enter an url')
+        return render_template('index.html')
     try:
         key_exist = foundCompetition["available"]
     except KeyError:
