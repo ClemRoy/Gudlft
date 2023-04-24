@@ -76,6 +76,8 @@ def purchasePlaces():
     placesRequired = int(request.form['places'])
     if placesRequired > maxPlaces:
         flash('Error: You cannot redeem more than 12 places')
+    elif placesRequired < 0:
+        flash('Error: You cannot redeem a negative number of places')
     else:
         if int(club['points']) >= placesRequired:
             competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired

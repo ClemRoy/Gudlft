@@ -43,6 +43,26 @@ def test_purchasePlaces_valid_points_number_deduction(client, club, competition,
     assert competition[0]['numberOfPlaces'] == 20
     assert club[0]['points'] == 8
 
+def test_purchasePlaces_negative_input(client, club, competition, monkeypatch):
+    """
+    Given: A user try to retrieve -15 places for a competition
+    When: he book -15 places
+    Then: the user receive a message error and the values 
+    of numberofplace and points don't change"""
+    monkeypatch.setattr('server.competitions', competition)
+    monkeypatch.setattr('server.clubs', club)
+
+    response = client.post(
+        '/purchasePlaces', data={
+            "competition": competition[0]['name'],
+            "club": club[0]['name'],
+            "places": -15})
+
+    assert b'Error: You cannot redeem a negative number of places' in response.data
+    assert int(competition[0]['numberOfPlaces']) == 25
+    assert int(club[0]['points']) == 13
+
+
 def test_purchasePlaces_customer_use_too_many_points(client, club, competition, monkeypatch):
     """
     Given: A user try to retrieve 8 places for a competition while he only has 4 points

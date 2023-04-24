@@ -21,7 +21,7 @@
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
         <label for="places">How many places? (the maximum is 12 or your number of points available)</label>
-        <input type="number" name="places" id="places" onchange="validatePlaces()" max="{{club['points']}}"/>
+        <input type="number" name="places" id="places" onchange="validatePlaces()" min="0" max="{{club['points']}}"/>
         <button type="submit">Book</button>
     </form>
 </body>
