@@ -20,6 +20,16 @@
         <input type="email" name="email" id=""/>
         <button type="submit">Enter</button>
     </form>
+    <h3>Clubs:</h3>
+    <ul>
+        {% for club in clubs %}
+        <li>
+            Club: {{club['name']}} </br>
+            Number of points: {{club['points']}}
+        </li>
+        <hr>
+        {% endfor %}
+    </ul>
     {%endwith%}
 </body>
 </html>

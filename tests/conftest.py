@@ -7,7 +7,7 @@ def client():
         yield client
 
 @pytest.fixture
-def club():
+def clubs():
     return [
         {
             "name": "Simply Lift",
@@ -27,7 +27,7 @@ def club():
 
 
 @pytest.fixture
-def competition():
+def competitions():
     return [
         {
             "name": "Spring Festival",
@@ -47,7 +47,7 @@ def competition():
     ]
 
 @pytest.fixture
-def competition_with_availability():
+def competitions_with_availability():
     return [
         {
             "name": "Spring Festival",
