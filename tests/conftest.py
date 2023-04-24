@@ -1,10 +1,12 @@
 import pytest
 from server import app
 
+
 @pytest.fixture
 def client():
     with app.test_client() as client:
         yield client
+
 
 @pytest.fixture
 def clubs():
@@ -43,8 +45,14 @@ def competitions():
             "name": "Future comp",
             "date": "2026-10-22 13:30:00",
             "numberOfPlaces": "20"
+        },
+        {
+            "name": "Future comp2",
+            "date": "2026-10-22 13:30:00",
+            "numberOfPlaces": "0"
         }
     ]
+
 
 @pytest.fixture
 def competitions_with_availability():
@@ -65,6 +73,12 @@ def competitions_with_availability():
             "name": "Future comp",
             "date": "2026-10-22 13:30:00",
             "numberOfPlaces": "20",
+            "available": True
+        },
+        {
+            "name": "Future comp2",
+            "date": "2026-10-22 13:30:00",
+            "numberOfPlaces": "0",
             "available": True
         }
     ]
