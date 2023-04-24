@@ -50,7 +50,11 @@ def showSummary():
 
 @app.route('/book/<competition>/<club>')
 def book(competition,club):
-    foundClub = [c for c in clubs if c['name'] == club][0]
+    try:
+        foundClub = [c for c in clubs if c['name'] == club][0]
+    except IndexError:
+        flash('Please follow the links and do not attempt to directly enter an url')
+        return render_template('index.html')
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
     try:
         key_exist = foundCompetition["available"]

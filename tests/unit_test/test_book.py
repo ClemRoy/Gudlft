@@ -65,3 +65,14 @@ def test_book_invalid_competition(client, clubs, competitions_with_availability,
     monkeypatch.setattr('server.clubs', clubs)
     response = client.get("book/Spring%20Festival/Simply%20Lift")
     assert b"You were redirected here because you tried to book place for a competition that already happened" in response.data
+
+def test_book_unknown_club(client, clubs, competitions, monkeypatch):
+    """
+    Given: a user try to access a competition with an unknown club in the url
+    When: he directly enter the wrong club name in the url
+    Then: he should be redirected to the index with an error message
+    """
+    monkeypatch.setattr('server.competitions', competitions)
+    monkeypatch.setattr('server.clubs', clubs)
+    response = client.get("book/Future%20comp/SimplXXXX")
+    assert b"Please follow the links and do not attempt to directly enter an url" in response.data
