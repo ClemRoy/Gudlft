@@ -41,7 +41,8 @@ def showSummary():
     try:
         club = [club for club in clubs if club['email'] == request.form['email']][0]
     except IndexError:
-        abort(404,"Email not found")
+        flash('There is no account using this email')
+        return render_template('index.html')
     for competition in competitions:
         competition = check_for_availability(competition)
     return render_template('welcome.html',club=club,competitions=competitions)
