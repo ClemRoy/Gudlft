@@ -1,7 +1,7 @@
 import pytest
 from server import purchasePlaces
-from tests.conftest import client, clubs, competitions
-
+from tests.conftest import client, clubs
+from tests.conftest import competitions_with_availability as competitions
 
 def test_purchasePlaces_valid_points_number_render(client, clubs, competitions, monkeypatch):
     """

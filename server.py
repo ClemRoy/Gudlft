@@ -46,7 +46,7 @@ def showSummary():
                 == request.form['email']][0]
     except IndexError:
         flash('There is no account using this email')
-        return render_template('index.html')
+        return render_template('index.html', clubs=clubs)
     for competition in competitions:
         competition = check_for_availability(competition)
     return render_template('welcome.html', club=club, competitions=competitions)
@@ -58,14 +58,13 @@ def book(competition, club):
         foundClub = [c for c in clubs if c['name'] == club][0]
         foundCompetition = [
             c for c in competitions if c['name'] == competition][0]
+        key_exist = foundCompetition["available"]
     except IndexError:
         flash('Please follow the links and do not attempt to directly enter an url')
-        return render_template('index.html')
-    try:
-        key_exist = foundCompetition["available"]
+        return render_template('index.html', clubs=clubs)
     except KeyError:
         flash('Please follow the links and do not attempt to directly enter an url')
-        return render_template('index.html')
+        return render_template('index.html', clubs=clubs)
     if foundCompetition['available'] == False:
         flash("You were redirected here because you tried to book place for a competition that already happened")
         return render_template('welcome.html', club=club, competitions=competitions)
