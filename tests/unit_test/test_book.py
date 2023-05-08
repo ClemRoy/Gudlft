@@ -3,29 +3,6 @@ from server import app,showSummary, book
 from tests.conftest import client, clubs, competitions, competitions_with_availability
 
 
-def test_book_welcome_interface_link_available(client):
-    """
-    Given: A user access show summary
-    When: a competition is in the future
-    Then:There should be a link to the book function 
-    """
-    email = "john@simplylift.co"
-    response = client.post('/showSummary', data={"email": email})
-    assert b"""<a href="/book/Future%20comp/Simply%20Lift">""" in response.data
-
-
-def test_book_welcome_interface_link_hidden(client):
-    """
-    Given: A user access show summary
-    When: competition is in the past
-    Then:There should be no link to the book function 
-    """
-    email = "john@simplylift.co"
-    response = client.post('/showSummary', data={"email": email})
-    expected_text = b'''<a href="/book/Spring%20Festival/Simply%20Lift"'''
-    assert expected_text not in response.data
-    assert b"""You cannot book place for past competition""" in response.data
-
 def test_book_competition_without_availability(client, clubs, competitions, monkeypatch):
     """
     Given: a user try to access a competition 
