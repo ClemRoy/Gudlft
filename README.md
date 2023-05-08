@@ -26,7 +26,7 @@
 3. Installation
 
     1. Clone this repository using `$ git clone https://github.com/ClemRoy/Gudlft.git` (you can also download the code using [as a zip file])
-    2. Move to the epicEvents-api root folder
+    2. Move to the GUDLFT root folder
     3. Create a virtual environment for the project with `$ py -m venv env` on windows or `$ python3 -m venv env` on macos or linux.
     4. Activate the virtual environment with `$ env\Scripts\activate` on windows or `$ source env/bin/activate` on macos or linux.
     5. Install project dependencies with `$ pip install -r requirements.txt`
